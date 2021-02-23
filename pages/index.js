@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <Container maxWidth="container.xl" py={4}>
       <Head>
-        <title>Create Next App</title>
+        <title>Juho Haimila - Photographer from Finland</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
