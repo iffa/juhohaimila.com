@@ -23,7 +23,7 @@ export default function Home() {
 
         <SimpleGrid spacing={4} minChildWidth="320px">
           {images.map((image, index) => (
-            <AspectRatio ratio={16 / 9} key={index}>
+            <AspectRatio ratio={3 / 2} key={index}>
               <Photo src={`/images/${image}`} layout="fill" borderRadius={4} />
             </AspectRatio>
           ))}
