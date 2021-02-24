@@ -35,8 +35,7 @@ export default function Home(props: HomeProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState();
   const modalSize = useBreakpointValue({
-    base: "xs",
-    sm: "sm",
+    base: "md",
     md: "lg",
     lg: "6xl",
   });
@@ -148,7 +147,14 @@ export default function Home(props: HomeProps) {
         </Flex>
       </Container>
 
-      <Modal isOpen={isOpen} onClose={onClose} size={modalSize} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={modalSize}
+        scrollBehavior="inside"
+        allowPinchZoom={true}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{selectedImage}</ModalHeader>
