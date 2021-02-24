@@ -28,7 +28,7 @@ export default function Home(props: HomeProps) {
   const { images } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState();
-  const modalSize = useBreakpointValue({ base: "6xl" });
+  const modalSize = useBreakpointValue({ base: "sm", md: "md", lg: "6xl" });
 
   function openModal(image) {
     setSelectedImage(image);
@@ -41,6 +41,20 @@ export default function Home(props: HomeProps) {
       <Container maxWidth="container.xl" py={8}>
         <Head>
           <title>Juho Haimila - Photographer from Finland</title>
+          <meta
+            property="og:title"
+            content="Juho Haimila - Photographer from Finland"
+            key="title"
+          />
+          <meta
+            property="og:description"
+            content="Personal site of Juho Haimila, containing a glimpse into his photo portfolio."
+            key="description"
+          />
+          <meta
+            name="description"
+            content="Personal site of Juho Haimila, containing a glimpse into his photo portfolio."
+          />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
@@ -57,11 +71,17 @@ export default function Home(props: HomeProps) {
 
           <SimpleGrid spacing={4} columns={{ base: 2, md: 3, lg: 4 }}>
             {images.map((image, index) => (
-              <Box as="button" onClick={() => openModal(image)} key={index}>
+              <Box
+                as="button"
+                onClick={() => openModal(image)}
+                key={index}
+                title="Open photo preview modal"
+              >
                 <Photo
                   src={`/images/${image}`}
-                  width={300 * 3}
-                  height={200 * 3}
+                  alt="A photo"
+                  width={300}
+                  height={200}
                   layout="responsive"
                   borderRadius={8}
                 />
@@ -79,8 +99,9 @@ export default function Home(props: HomeProps) {
           <ModalBody>
             <Photo
               src={`/images/${selectedImage}`}
-              width={300 * 5}
-              height={200 * 5}
+              alt="A photo"
+              width={300}
+              height={200}
               layout="responsive"
             />
           </ModalBody>
