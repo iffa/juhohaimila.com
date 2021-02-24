@@ -5,6 +5,10 @@ export const theme = extendTheme({
     initialColorMode: "dark",
     useSystemColorMode: false,
   },
+  fonts: {
+    heading: "Raleway, sans-serif",
+    body: "Raleway, sans-serif",
+  },
 });
 
 function MyApp({ Component, pageProps }) {

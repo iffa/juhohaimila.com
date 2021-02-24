@@ -1,8 +1,12 @@
 import {
   Box,
+  ButtonGroup,
   Container,
+  Divider,
   Flex,
   Heading,
+  IconButton,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -17,6 +21,8 @@ import {
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import React, { useState } from "react";
+import { AiFillMail } from "react-icons/ai";
+import { FaInstagram, FaTwitter } from "react-icons/fa";
 import { Photo } from "../components/Photo";
 import { getFiles } from "../lib/file";
 
@@ -28,17 +34,25 @@ export default function Home(props: HomeProps) {
   const { images } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState();
-  const modalSize = useBreakpointValue({ base: "sm", md: "md", lg: "6xl" });
+  const modalSize = useBreakpointValue({
+    base: "xs",
+    sm: "sm",
+    md: "lg",
+    lg: "6xl",
+  });
+  const footerIconSize = useBreakpointValue({
+    base: "md",
+    md: "lg",
+  });
 
   function openModal(image) {
     setSelectedImage(image);
     onOpen();
-    return true;
   }
 
   return (
     <>
-      <Container maxWidth="container.xl" py={8}>
+      <Container maxWidth="container.xl">
         <Head>
           <title>Juho Haimila - Photographer from Finland</title>
           <meta
@@ -58,10 +72,10 @@ export default function Home(props: HomeProps) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Flex direction="column">
-          <Box mb={8} as="header">
+        <Flex direction="column" height="100vh">
+          <Box mb={8} as="header" pt={8}>
             <Heading size="3xl" as="h1">
-              Juho Haimila
+              Juho Haimila 📸
             </Heading>
             <Text fontSize="xl" as="h2">
               I'm a photographer from Finland. Click on a photo preview to open
@@ -69,25 +83,68 @@ export default function Home(props: HomeProps) {
             </Text>
           </Box>
 
-          <SimpleGrid spacing={4} columns={{ base: 2, md: 3, lg: 4 }}>
-            {images.map((image, index) => (
-              <Box
-                as="button"
-                onClick={() => openModal(image)}
-                key={index}
-                title="Open photo preview modal"
-              >
-                <Photo
-                  src={`/images/${image}`}
-                  alt="A photo"
-                  width={300}
-                  height={200}
-                  layout="responsive"
-                  borderRadius={8}
-                />
+          <Box as="main" flex="1">
+            <SimpleGrid spacing={4} columns={{ base: 2, md: 3, lg: 4 }}>
+              {images.map((image, index) => (
+                <Box
+                  as="button"
+                  onClick={() => openModal(image)}
+                  key={index}
+                  title="Open photo preview modal"
+                >
+                  <Photo
+                    src={`/images/${image}`}
+                    alt="A photo"
+                    width={300}
+                    height={200}
+                    layout="responsive"
+                    borderRadius={8}
+                  />
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
+
+          <Box as="footer" py={8}>
+            <Divider mb={8} />
+            <Flex direction="row" justifyContent="space-between">
+              <Box>
+                <Text fontSize="md" pt={2}>
+                  © 2021 Juho Haimila
+                </Text>
+                <Text fontSize="sm" mt={2}>
+                  Website crafted by{" "}
+                  <Link href="https://iffa.dev" isExternal>
+                    Santeri Elo
+                  </Link>{" "}
+                  💖
+                </Text>
               </Box>
-            ))}
-          </SimpleGrid>
+              <ButtonGroup size={footerIconSize} variant="ghost">
+                <Link href={process.env.NEXT_PUBLIC_MAILTO_LINK} isExternal>
+                  <IconButton
+                    aria-label="Send me an email"
+                    title="Send me an email"
+                    icon={<AiFillMail />}
+                  />
+                </Link>
+                <Link href={process.env.NEXT_PUBLIC_TWITTER_URL} isExternal>
+                  <IconButton
+                    aria-label="Visit my Twitter profile"
+                    title="Visit my Twitter profile"
+                    icon={<FaTwitter />}
+                  />
+                </Link>
+                <Link href={process.env.NEXT_PUBLIC_INSTAGRAM_URL} isExternal>
+                  <IconButton
+                    aria-label="Visit my Instagram profile"
+                    title="Visit my Instagram profile"
+                    icon={<FaInstagram />}
+                  />
+                </Link>
+              </ButtonGroup>{" "}
+            </Flex>
+          </Box>
         </Flex>
       </Container>
 
@@ -112,10 +169,12 @@ export default function Home(props: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  // get all images from /public/images during build-time
   const images = await getFiles("public", "images");
 
   return {
     props: {
+      // pass images as props to the component
       images,
     },
   };
