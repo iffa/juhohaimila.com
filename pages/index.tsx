@@ -11,6 +11,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
@@ -24,16 +25,16 @@ import React, { useState } from "react";
 import { AiFillMail } from "react-icons/ai";
 import { FaInstagram, FaTwitter } from "react-icons/fa";
 import { Photo } from "../components/Photo";
-import { getFiles } from "../lib/file";
+import { Image, listImages } from "../lib/s3";
 
 export type HomeProps = {
-  images: string[];
+  images: Image[];
 };
 
 export default function Home(props: HomeProps) {
   const { images } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState<Image>();
   const modalSize = useBreakpointValue({
     base: "md",
     md: "lg",
@@ -92,8 +93,8 @@ export default function Home(props: HomeProps) {
                   title="Open photo preview modal"
                 >
                   <Photo
-                    src={`/images/${image}`}
-                    alt="A photo"
+                    src={image.url}
+                    alt={image.name}
                     width={300}
                     height={200}
                     layout="responsive"
@@ -157,17 +158,22 @@ export default function Home(props: HomeProps) {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{selectedImage}</ModalHeader>
+          <ModalHeader>{selectedImage?.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Photo
-              src={`/images/${selectedImage}`}
-              alt="A photo"
+              src={selectedImage?.url}
+              alt={selectedImage?.name}
               width={300}
               height={200}
               layout="responsive"
             />
           </ModalBody>
+          <ModalFooter>
+            <Link href={selectedImage?.url} isExternal>
+              View full-size original
+            </Link>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
@@ -175,8 +181,7 @@ export default function Home(props: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  // get all images from /public/images during build-time
-  const images = await getFiles("public", "images");
+  const images = await listImages();
 
   return {
     props: {
