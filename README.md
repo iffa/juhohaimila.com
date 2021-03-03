@@ -23,3 +23,7 @@ npm run dev
 In order for the site to work, you need to populate `.env.local` - see `.env.example` for a reference.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser.
+
+## Credits
+
+[Favicon](https://github.com/twitter/twemoji) by [Twitter, Inc.](https://github.com/twitter) / [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
