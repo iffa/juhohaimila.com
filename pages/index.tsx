@@ -119,6 +119,13 @@ export default function Home(props: HomeProps) {
                   </Link>{" "}
                   💖
                 </Text>
+                <Link
+                  fontSize="sm"
+                  href="https://github.com/iffa/juhohaimila.com"
+                  isExternal
+                >
+                  View source code 🛠️
+                </Link>
               </Box>
               <ButtonGroup size={footerIconSize} variant="ghost">
                 <Link href={process.env.NEXT_PUBLIC_MAILTO_LINK} isExternal>
