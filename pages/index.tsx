@@ -195,5 +195,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
       // pass images as props to the component
       images,
     },
+    // revalidate at most every hour
+    revalidate: 3600,
   };
 };
